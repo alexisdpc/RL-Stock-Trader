@@ -2,7 +2,7 @@
 #
 # We implement a Reinforcement Learning algorithm for stock trading.
 # The aim is to train an Agent that will buy and sell different stocks to maximize the profit.
-# Model: Linear Regression with gradient descent and momentum. 
+# Model: Linear regression with gradient descent and momentum. 
 #
 # =============================================================================================
 
@@ -137,7 +137,7 @@ class MultiStockEnv:
     self.reset()
 
   def reset(self):
-    ''' Goes back to the initial state
+    '''Goes back to the initial state
     Returns: Observation state'''
     self.cur_step = 0
     self.stock_owned = np.zeros(self.n_stock)
@@ -160,8 +160,6 @@ class MultiStockEnv:
     self.cur_step += 1
     self.stock_price = self.stock_price_history[self.cur_step]
     self._trade(action) 
-
-    # TODO: Check this one out: print(f'\n {action} \n')
 
     # Obtain the current value
     cur_val = self._get_val()
@@ -280,14 +278,13 @@ class DQNAgent(object):
     return max_action
   
   def train(self, state, action, reward, next_state, done):
-    ''' Training function. '''
+    '''Training function'''
 
-    # WE ONLY COMPUTE TARGET FOR STATE PREDICTED
-    # COUNT NON_ZERO MATRIX ENTRIES
+    # We only compute 'target value' for the predicted state
     if done:
       target = reward 
     else:   
-      # Update value function maximizing over predictions (Bellmann Equation?) (one step into the future)
+      # Update value function maximizing over predictions (Bellmann Equation, one step into the future)
       target = reward + self.gamma*np.amax(self.model.predict(next_state), axis=1)
     
     # Construct the Value function for all possible states
@@ -329,15 +326,13 @@ def play_one_episode(agent, env, is_train):
   return port_val['cur_val']   
 
 
-#ep = 0
 if __name__ == '__main__':
 
   # Set-up and onfiguration 
   ep = 0
   models_folder = 'linear_rl_trader_models'
   rewards_folder = 'linear_rl_trader_rewards'
-  num_episodes = 200 #10 #2000
-  batch_size = 32  # I NEVER USE THIS VARIABLE!
+  num_episodes = 2000 #10 
   initial_investment = 20000
 
   # Run with command arguments from the terminal -m train or -m test
