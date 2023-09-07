@@ -412,6 +412,3 @@ if __name__ == '__main__':
   for i in range(n_stocks):
     actions['Actions'+str(i)] = actions_list[i]
   actions.to_csv(f'{rewards_folder}/actions.csv')
-
-  # Plot value of the portfolio as a function of time, this plot will have n_episodes lines pick 5 best and 5 worst
-  # I can get rid of plot_rl_rewards.py, just use results.ipynb
