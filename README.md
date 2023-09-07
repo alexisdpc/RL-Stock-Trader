@@ -19,7 +19,7 @@ Green points is when the trader buys, while red points are when the trader sells
 ![buy_sell](https://github.com/alexisdpc/RL-Stock-Trader/assets/124795834/c7b14119-690e-4576-bb61-c52dc21c159e)
 
 
-We also compare the returns on the test data with two other portfolios:
+We also compare the returns on the 5 years of test data with two other portfolios:
 
 - Portfolio with equally-weighted stocks: 30.14 %
 
