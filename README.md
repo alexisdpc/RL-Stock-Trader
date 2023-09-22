@@ -1,6 +1,5 @@
 # Reinforcement Learning Stock Trader
 
-Notebook summarizing the results after running the RL trader.\
 The RL trader aims to maximize the profit by doing a daily rebalancing of the portfolio.
 
 - The model trains on the first half of the stock prices and tests on the second half.
