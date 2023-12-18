@@ -6,7 +6,7 @@ The RL trader aims to maximize the profit by doing a daily rebalancing of the po
 - The model predicts what action to take: buy/sell/hold based on historical data.
 - An epsilon-greedy policy is used to allow for exploration.
 
-Prediction Model
+Prediction Model:
 
 - Linear Regression using Gradient Descent with Momentum
 
