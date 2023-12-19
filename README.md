@@ -11,7 +11,7 @@ Prediction Model:
 - Linear Regression using Gradient Descent with Momentum
 
 
-## Results
+## Result
 This is an example of how the trader acts on one of the stocks (JPM).\
 Green points is when the trader buys, while red points are when the trader sells.
 
