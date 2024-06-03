@@ -20,9 +20,7 @@ Green points is when the trader buys, while red points are when the trader sells
 
 We also compare the returns on the 5 years of test data with two other portfolios:
 
-- Portfolio with equally-weighted stocks: 30.14 %
+- Portfolio with equally-weighted stocks: 92.73 %
 
-- Portfolio with random actions (epsilon=1): 23.57 %
-
-- Portfolio with Reinforcement Learning agent: 188.53 %
+- Portfolio with Reinforcement Learning agent: 114.23 %
 

@@ -19,7 +19,7 @@ from sklearn.preprocessing import StandardScaler
 
 '''We read the data and create a dataframe that contains the stock prices stock_prices.csv:
 January 1, 2010 - December 31, 2019
-Chevron (CVX), Ford (FORD), Google (GOOG), JP MOrgan (JPM), Microsoft (MSFT), Walmart (WMT)'''
+Chevron (CVX), Ford (FORD), Google (GOOG), JP Morgan (JPM), Microsoft (MSFT), Walmart (WMT)'''
 
 def get_data():
   '''Returns: Array with the prices of the selected stocks.
@@ -29,7 +29,7 @@ def get_data():
 
 def get_scaler(env):
   '''Returns: scaler object to scale the states
-  StandardScaler: Standardize features by removing the mean and scaling to unit variance.
+  StandardScaler: Standardized features by removing the mean and scaling to unit variance.
 
   In order to get the right parameters for the scaler we need some data
   To get the data, we play an episode randomly and store each of the states we encounter
@@ -72,14 +72,12 @@ class LinearModel:
     '''Check that the vector is 2D
     Argument: X is size (1,7)
     Return: Y is size (1,27) Value of the portfolio for each of the 27 actions'''
-    assert(len(X.shape) == 2)  # Remove this line and all the asserts?
     return X.dot(self.W) + self.b
 
   def sgd(self, X, Y, learning_rate = 0.01, momentum = 0.9):
-    '''Implementation of stochastic?? gradient descent with Momentum
+    '''Implementation of stochastic gradient descent with Momentum
     First calculate the momentum term. 
     Next update the parameters.'''
-    assert(len(X.shape) == 2)      
 
     # The total number of values n,m where Y is an n,m matrix
     num_values = np.prod(Y.shape)
@@ -90,9 +88,9 @@ class LinearModel:
     # (Yhat-Y) has only 1 non-zero entry
 
     Yhat = self.predict(X)
-    # Derivative of MSE function with resepct to W, gW is a 7,27 matrix
+    # Derivative of MSE function with respect to W, gW is a 7,27 matrix
     gW = 2.*X.T.dot(Yhat-Y)/num_values
-    # Derivative of MSE function with resepct to b, gb has shape 27,1 
+    # Derivative of MSE function with respect to b, gb has shape 27,1 
     gb = 2.*(Yhat-Y).sum(axis=0)/num_values
 
     # The value of 'momentum' determines the contributions from previous gradients
@@ -118,10 +116,10 @@ class LinearModel:
     '''Save arrays into filepath.npz'''
     np.savez(filepath, W=self.W, b=self.b)    
 
-class MultiStockEnv:
+class Portfolio:
   '''Returns: state, reward, done, info '''
 
-  def __init__(self, data, initial_investment=2000):         
+  def __init__(self, data, initial_investment=20000):         
     self.stock_price_history = data
     self.n_step, self.n_stock = self.stock_price_history.shape
 
@@ -184,7 +182,7 @@ class MultiStockEnv:
     - Price of the stocks is 150,100,200
     - We have 10000 cash in hand'''
 
-    obs = np.empty(self.state_dim)  # Why not use np.zeros(self.state_dim)?
+    obs = np.empty(self.state_dim) 
     # First n_stock entries contain the number of stocks owned:
     obs[:self.n_stock] = self.stock_owned  
     # The next n_stock entries contain the stock prices:
@@ -228,7 +226,7 @@ class MultiStockEnv:
         self.cash_in_hand += self.stock_price[i]*self.stock_owned[i] 
         self.stock_owned[i] = 0 
     
-    # Buy shaers (one-by-one) for each stock, until there is no more cash in hand
+    # Buy shares (one-by-one) for each stock, until there is no more cash in hand
     if buy_index:
       can_buy = True
       while can_buy:
@@ -246,13 +244,13 @@ class DQNAgent(object):
   def __init__(self, state_size, action_size):
     ''' Constructor
     state_size: input of NN
-    action_size output of NN '''
+    action_size: output of NN '''
     self.state_size = state_size
     self.action_size = action_size
     self.gamma = 0.95   # Discount rate
     self.epsilon = 1.0  # Exploration rate
     self.epsilon_min = 0.01
-    self.epsilon_decay = 0.995
+    self.epsilon_decay = 0.995 #1.0#0.995
     self.model = LinearModel(state_size, action_size)  # Call the LinearModel constructor
 
   def act(self, state):
@@ -330,9 +328,9 @@ if __name__ == '__main__':
 
   # Set-up and onfiguration 
   ep = 0
-  models_folder = 'linear_rl_trader_models'
-  rewards_folder = 'linear_rl_trader_rewards'
-  num_episodes = 2000 #10 
+  models_folder = 'models'
+  rewards_folder = 'rewards'
+  num_episodes = 2000  #10 2000 
   initial_investment = 20000
 
   # Run with command arguments from the terminal -m train or -m test
@@ -354,8 +352,8 @@ if __name__ == '__main__':
   train_data = data[:n_train]
   test_data = data[n_train:]
   
-  # Initialize the environment with the Train data and variables
-  env = MultiStockEnv(train_data, initial_investment)
+  # Initialize the environment with the 'train' data and variables
+  env = Portfolio(train_data, initial_investment)
   state_size = env.state_dim
   action_size = len(env.action_space)
   agent = DQNAgent(state_size, action_size)
@@ -371,12 +369,12 @@ if __name__ == '__main__':
       scaler = pickle.load(f)
     
     # Remake the environment with the 'test' data
-    env = MultiStockEnv(test_data, initial_investment)
+    env = Portfolio(test_data, initial_investment)
 
     # Initial epsilon (determines amount of exploration)
-    # epislon=0 in 'test' mode then we always gives the same results
+    # epislon=0 in 'test' mode always gives the same results
     # epsilon=1 always takes random actions
-    agent.epsilon = 0.01
+    agent.epsilon = 0.01#1.0# 0.01  #0.01
 
     # Load the weights
     agent.load(f'{models_folder}/linear.npz')
