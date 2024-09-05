@@ -24,3 +24,6 @@ We also compare the returns on the 5 years of test data with two other portfolio
 
 - Portfolio with Reinforcement Learning agent: 114.23 %
 
+![image](https://github.com/user-attachments/assets/002b5e79-9244-4829-b76a-ac0c85f90549)
+
+
